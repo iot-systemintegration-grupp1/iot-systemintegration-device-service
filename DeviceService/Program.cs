@@ -12,17 +12,5 @@ DeviceEndpoints deviceEndpoints = new DeviceEndpoints ();
 
 deviceEndpoints.MapEndpoints(app, authorizationService, authorizedDevices);
 
-app.MapGet("/internal/devices/{deviceId}/authorization",
-    (string deviceId) => {
-
-        bool isAuthorized = authorizationService.IsAuthorized(deviceId, authorizedDevices);
-
-        var response = new { deviceId = deviceId, authorized = isAuthorized };
-
-        return response;
- 
-    });
-
-
 
 app.Run();
