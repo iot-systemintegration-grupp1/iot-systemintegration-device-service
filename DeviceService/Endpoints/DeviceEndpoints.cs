@@ -1,4 +1,5 @@
 ﻿using DeviceService.Services;
+using DeviceService.Models;
 
 namespace DeviceService.Endpoints
 {
@@ -13,7 +14,9 @@ namespace DeviceService.Endpoints
 
                     bool isAuthorized = authorizationService.IsAuthorized(deviceId, authorizedDevices);
 
-                    var response = new { deviceId = deviceId, authorized = isAuthorized };
+                    AuthorizationResponse response = new AuthorizationResponse();
+                    response.DeviceId = deviceId;
+                    response.Authorized = isAuthorized;
 
                     return response;
 
