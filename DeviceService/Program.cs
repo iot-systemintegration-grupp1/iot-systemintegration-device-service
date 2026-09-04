@@ -5,12 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-List<string> authorizedDevices = new List<string> { "DEVICE-001", "TEMP-001", "HUMIDITY-001"};
 
 DeviceAuthorizationService authorizationService = new DeviceAuthorizationService();
 DeviceEndpoints deviceEndpoints = new DeviceEndpoints ();
+DeviceRegistrationService deviceRegistration = new DeviceRegistrationService();
+DeviceRepository deviceRepository = new DeviceRepository();
 
-deviceEndpoints.MapEndpoints(app, authorizationService, authorizedDevices);
+deviceEndpoints.MapEndpoints(app, authorizationService, deviceRegistration, deviceRepository);
 
 
 app.Run();

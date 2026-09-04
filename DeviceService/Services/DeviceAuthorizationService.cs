@@ -1,10 +1,22 @@
-﻿namespace DeviceService.Services
+﻿using DeviceService.Models;
+
+namespace DeviceService.Services
 {
     public class DeviceAuthorizationService
     {
-        public bool IsAuthorized(string deviceId, List<string> authorizedDevices)
+        public bool IsAuthorized(string deviceId, IDeviceRepository repository)
         {
-            return authorizedDevices.Contains(deviceId);
+            Device? device = repository.GetById(deviceId);
+            
+
+            if (device is not null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
