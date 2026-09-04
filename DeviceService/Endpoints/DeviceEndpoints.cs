@@ -26,7 +26,14 @@ namespace DeviceService.Endpoints
             {
                 DeviceRegistrationResponse response = registrationService.RegisterDevice(request, deviceRepository);
 
-                return response;
+                if (response.Success == false)
+                    {
+                        return Results.Conflict(response);
+                    }
+                else
+                {
+                    return Results.Ok(response);
+                }
             });
 
             app.MapGet("/device/{deviceId}", (string deviceId) =>

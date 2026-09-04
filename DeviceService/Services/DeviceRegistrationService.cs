@@ -6,6 +6,19 @@ namespace DeviceService.Services
     {
         public DeviceRegistrationResponse RegisterDevice(DeviceRegistrationRequest request, IDeviceRepository repository)
         {
+            Device? existingDevice = repository.GetById(request.DeviceId);
+
+            if (existingDevice is not null)
+            {
+                var duplicateResponse = new DeviceRegistrationResponse
+                {
+                    Success = false,
+                    TimeRegistered = existingDevice.TimeRegistered
+                };
+
+                return duplicateResponse;
+            }
+            
             Device device = new Device();
 
             device.DeviceId = request.DeviceId;
