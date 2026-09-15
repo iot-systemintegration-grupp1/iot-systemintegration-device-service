@@ -9,7 +9,7 @@ namespace DeviceService.Endpoints
         {
             app.MapGet("/health", () => "Device service is running!");
 
-            app.MapGet("/internal/devices/{deviceId}/authorization",
+            app.MapGet("/device/authentication/{deviceId}",
                 (string deviceId) => {
 
                     bool isAuthorized = authorizationService.IsAuthorized(deviceId, deviceRepository);
@@ -36,7 +36,7 @@ namespace DeviceService.Endpoints
                 }
             });
 
-            app.MapGet("/device/{deviceId}", (string deviceId) =>
+            app.MapGet("/device/getby/{deviceId}", (string deviceId) =>
             {
                 Device? device = deviceRepository.GetById(deviceId);
 
