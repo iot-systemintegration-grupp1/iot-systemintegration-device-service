@@ -13,7 +13,8 @@ namespace DeviceService.Services
                 var duplicateResponse = new DeviceRegistrationResponse
                 {
                     Success = false,
-                    TimeRegistered = existingDevice.TimeRegistered
+                    TimeRegistered = existingDevice.TimeRegistered,
+                    Message = $"Device with ID '{request.DeviceId}' is already registered."
                 };
 
                 return duplicateResponse;
