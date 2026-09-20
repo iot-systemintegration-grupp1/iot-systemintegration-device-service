@@ -5,12 +5,12 @@ namespace DeviceService.Endpoints
 {
     public class DeviceEndpoints
     {
-        public void MapEndpoints(WebApplication app, DeviceAuthorizationService authorizationService, DeviceRegistrationService registrationService, DeviceRepository deviceRepository)
+        public void MapEndpoints(WebApplication app)
         {
             app.MapGet("/health", () => "Device service is running!");
 
             app.MapGet("/device/authenticate/{deviceId}",
-                (string deviceId) => {
+                (string deviceId, DeviceAuthorizationService authorizationService, IDeviceRepository deviceRepository) => {
 
                     bool isAuthorized = authorizationService.IsAuthorized(deviceId, deviceRepository);
 
@@ -22,13 +22,13 @@ namespace DeviceService.Endpoints
 
                 });
 
-            app.MapPost("/device/register", (DeviceRegistrationRequest request) =>
+            app.MapPost("/device/register", (DeviceRegistrationRequest request, DeviceRegistrationService registrationService, IDeviceRepository deviceRepository) =>
             {
                 DeviceRegistrationResponse response = registrationService.RegisterDevice(request, deviceRepository);
 
                 if (response.Success == false)
                     {
-                        return Results.Conflict(response);
+                        return Results.Json(response);
                     }
                 else
                 {
@@ -36,7 +36,7 @@ namespace DeviceService.Endpoints
                 }
             });
 
-            app.MapGet("/device/getby/{deviceId}", (string deviceId) =>
+            app.MapGet("/device/getby/{deviceId}", (string deviceId, IDeviceRepository deviceRepository) =>
             {
                 Device? device = deviceRepository.GetById(deviceId);
 

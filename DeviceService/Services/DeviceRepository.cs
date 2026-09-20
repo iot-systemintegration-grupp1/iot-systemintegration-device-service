@@ -1,19 +1,26 @@
+using DeviceService.Data;
 using DeviceService.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeviceService.Services;
 
 public class DeviceRepository : IDeviceRepository
 {
-    private readonly List<Device> _devices = new();
+    private readonly DeviceDbContext _context;
+
+    public DeviceRepository(DeviceDbContext context)
+    {
+        _context = context;
+    }
 
     public Device? GetById(string deviceId)
     {
-        return _devices.FirstOrDefault(d => d.DeviceId == deviceId);
+        return _context.Devices.FirstOrDefault(d => d.DeviceId == deviceId);
     }
 
     public IEnumerable<Device> GetAll()
     {
-        return _devices;
+        return _context.Devices.ToList();
     }
 
     public void Add(Device device)
@@ -23,6 +30,7 @@ public class DeviceRepository : IDeviceRepository
             throw new ArgumentException("DeviceId is required.");
         }
 
-        _devices.Add(device);
+        _context.Devices.Add(device);
+        _context.SaveChanges();
     }
 }
